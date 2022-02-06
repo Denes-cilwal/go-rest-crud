@@ -1,5 +1,5 @@
-module twillo-demo
+module go-rest-crud
 
-go 1.16
+go 1.17
 
-require github.com/twilio/twilio-go v0.19.0 // indirect
+require github.com/gorilla/mux v1.8.0
