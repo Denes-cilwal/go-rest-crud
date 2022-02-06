@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func UpdateBook(w http.ResponseWriter, r *http.Request) {
+func (h handler) UpdateBook(w http.ResponseWriter, r *http.Request) {
 	// Read dynamic id parameter
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
@@ -26,12 +26,22 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-//
+	//
 	var updatedBook models.Book
-	// request ma aako updated data lai updatedBook ma bind gardiyo 
+	// request ma aako updated data lai updatedBook ma bind gardiyo
 	json.Unmarshal(body, &updatedBook)
 
+	/*
+		   - working with database
+			var book models.Book
+			// check if book with requested id exist or not 
+			if result := h.DB.First(&book, id); result.Error != nil {
+				fmt.Println(result.Error)
+			}
+
+	*/
 	// Iterate over all the mock Books
+
 	for index, book := range mocks.Books {
 
 		if book.Id == id {

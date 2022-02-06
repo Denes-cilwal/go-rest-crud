@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-rest-crud/pkg/db"
 	"go-rest-crud/pkg/handlers"
 	"log"
 	"net/http"
@@ -9,12 +10,14 @@ import (
 )
 
 func main() {
+	DB := db.Init()
+	h := handlers.New(DB)
 	router := mux.NewRouter()
 
 	router.HandleFunc("/books", handlers.GetAllBooks).Methods(http.MethodGet)
-	router.HandleFunc("/books/{id}", handlers.GetBook).Methods(http.MethodGet)
-	router.HandleFunc("/books", handlers.AddBook).Methods(http.MethodPost)
-	router.HandleFunc("/books/{id}", handlers.UpdateBook).Methods(http.MethodPut)
+	router.HandleFunc("/books/{id}", h.GetBook).Methods(http.MethodGet)
+	router.HandleFunc("/books", h.AddBook).Methods(http.MethodPost)
+	router.HandleFunc("/books/{id}", h.UpdateBook).Methods(http.MethodPut)
 	router.HandleFunc("/books/{id}", handlers.DeleteBook).Methods(http.MethodDelete)
 
 	log.Println("API is running!")

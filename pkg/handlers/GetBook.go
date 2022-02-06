@@ -4,19 +4,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-rest-crud/pkg/mocks"
+	"go-rest-crud/pkg/models"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
-func GetBook(w http.ResponseWriter, r *http.Request) {
+func (h handler) GetBook(w http.ResponseWriter, r *http.Request) {
 	// Read dynamic id parameter
 	vars := mux.Vars(r)
 	fmt.Println(vars, "is---")
 	id, _ := strconv.Atoi(vars["id"])
 
 	fmt.Println("id is -====")
+	var book models.Book
+	if result := h.DB.First(&book, id); result.Error != nil {
+		fmt.Println(result.Error)
+	}
 
 	// Iterate over all the mock books
 	for _, book := range mocks.Books {

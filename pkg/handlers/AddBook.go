@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"go-rest-crud/pkg/mocks"
 	"go-rest-crud/pkg/models"
 	"io/ioutil"
 	"log"
@@ -11,7 +10,7 @@ import (
 	"net/http"
 )
 
-func AddBook(w http.ResponseWriter, r *http.Request) {
+func (h handler) AddBook(w http.ResponseWriter, r *http.Request) {
 	// steps
 
 	defer r.Body.Close()
@@ -32,11 +31,19 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("books is ----", book)
 
 	book.Id = rand.Intn(100)
-	// Append to book mocks
-	fmt.Println(mocks.Books, "before append is ---")
-	mocks.Books = append(mocks.Books, book)
-	fmt.Println(mocks.Books, "After append is ---")
+	/*
+		// Append to book mocks
+		fmt.Println(mocks.Books, "before append is ---")
+		mocks.Books = append(mocks.Books, book)
+		fmt.Println(mocks.Books, "After append is ---")
 
+	*/
+
+	// Append to book table
+
+	if result := h.DB.Create(&book); result.Error != nil {
+		fmt.Println(result.Error)
+	}
 	// Send a 201 created response
 
 	w.WriteHeader(http.StatusCreated)
