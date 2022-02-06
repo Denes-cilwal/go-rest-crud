@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	// connection and migrated models
 	DB := db.Init()
 	h := handlers.New(DB)
 	router := mux.NewRouter()
